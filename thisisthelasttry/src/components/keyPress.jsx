@@ -1,17 +1,35 @@
-import React, { useState } from 'react'
-import {keyHandler, KEYPRESS} from 'react-key-handler'
+import React, { useState, useEffect } from 'react'
 
-function handleKeyPress({keyValue}){
-    return(
-        <div>
-            {keyValue === 'd' && (
-                <ol>
-                    <li>hello</li>
-                    <li>world</li>
-                </ol>
-            )}
-        </div>
-    );
-}
+function useKeyPress(targetKey) {
+    // State for keeping track of whether key is pressed
+    const [keyPressed, setKeyPressed] = useState(false);
+  
+    // If pressed key is our target key then set to true
+    function downHandler({ key }) {
+      if (key === targetKey) {
+        setKeyPressed(true);
+      }
+    }
+  
+    // If released key is our target key then set to false
+    const upHandler = ({ key }) => {
+      if (key === targetKey) {
+        setKeyPressed(false);
+      }
+    };
+  
+    // Add event listeners
+    useEffect(() => {
+      window.addEventListener('keydown', downHandler);
+      window.addEventListener('keyup', upHandler);
+      // Remove event listeners on cleanup
+      return () => {
+        window.removeEventListener('keydown', downHandler);
+        window.removeEventListener('keyup', upHandler);
+      };
+    }, []); // Empty array ensures that effect is only run on mount and unmount
+  
+    return keyPressed;
+  }
 
-export default keyHandler({keyEventName: KEYPRESS, keyValue: 'd'})(handleKeyPress);
+export default useKeyPress
