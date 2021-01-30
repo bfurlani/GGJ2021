@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<script>
+  window.addEventListener("keydown", (e) => {
+    if (e.keyCode == 68) {
+      let elm = document.getElementById("sprite");
+      elm.src = "./assets/png/Dead (1).png";
+    }
+  });
+
+  window.addEventListener("keyup", (e) => {
+    if (e.keyCode == 68) {
+      let elm = document.getElementById("sprite");
+      elm.src = "./assets/png/Idle (1).png";
+    }
+  });
+</script>
+<html>
+  <body>
+    <div><img id="sprite" src="./assets/png/Idle (1).png" alt="F" /></div>
+  </body>
+</html>
