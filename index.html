@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <script>
   let down = false;
-  let count = 1;
+  let count = 0;
   window.addEventListener("keydown", (e) => {
     if (e.keyCode == 68) {
-      down = true;
       let elm = document.getElementById("sprite");
-      elm.src = `./assets/png/Run (${count}).png`;
+      down = true;
       count++;
-      if (count > 8) {
-        count = 1;
+      count++;
+      elm.src = `./assets/png/Run (${count / 2}).png`;
+      moveRight();
+      if (count > 14) {
+        count = 0;
       }
     }
   });
@@ -21,6 +23,11 @@
       elm.src = "./assets/png/Idle (1).png";
     }
   });
+
+  function moveRight() {
+    let elm = document.getElementById("sprite");
+    elm.style.right = elm.style.right + 10;
+  }
 </script>
 <html>
   <body>
