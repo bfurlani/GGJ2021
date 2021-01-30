@@ -2,16 +2,23 @@
 <link rel="stylesheet" href="./stylesheet.css" id="stylehseet" />
 
 <script>
-
+  let down = false;
+  let count = 1;
   window.addEventListener("keydown", (e) => {
     if (e.keyCode == 68) {
+      down = true;
       let elm = document.getElementById("sprite");
-      elm.src = "./assets/png/Dead (1).png";
+      elm.src = `./assets/png/Run (${count}).png`;
+      count++;
+      if (count > 8) {
+        count = 1;
+      }
     }
   });
 
   window.addEventListener("keyup", (e) => {
     if (e.keyCode == 68) {
+      down = false;
       let elm = document.getElementById("sprite");
       elm.src = "./assets/png/Idle (1).png";
     }
