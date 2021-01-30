@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useKeyPress from './keyPress'
 import sprite_running_1 from '../assets/png/Run (1).png'
 import sprite_running_2 from '../assets/png/Run (2).png'
@@ -11,19 +11,33 @@ import sprite_running_8 from '../assets/png/Run (8).png'
 
 function Character(){
 
-    const [state, setState] = useState (() => {
-        return "Something random"
+    let images = [sprite_running_1, sprite_running_2, sprite_running_3, sprite_running_4, sprite_running_5, sprite_running_6, sprite_running_7, sprite_running_8]
+
+    const [currentImage, setCurrentImage] = useState (() => {
+        return images[0]
     })
 
-    const running = useKeyPress('d')
+    const runningRight = useKeyPress('d')
+
+    useEffect(()=>{
+        beginRun()
+    })
 
     return (
         <div>
-            {running && setTimeout(() => {
-                <div>Running</div>
-            }, 1000)}
+            <img src={currentImage} alt="F" />
+            {runningRight && <img src={currentImage} alt="F" />}
         </div>
     )
+
+    function beginRun(){
+        let counter = 0
+        setTimeout(()=>{
+            counter++
+        }, 500)
+
+        setCurrentImage(images[counter])
+    }
 }
 
 export default Character;
