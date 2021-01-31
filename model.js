@@ -1,23 +1,25 @@
 var context, controller, sprite, loop;
 var count = 1;
+var random = Math.round(Math.random() * 10);
+var hasInit = false;
+
 
 context = document.querySelector("canvas").getContext("2d");
 
-context.canvas.height = 400;
-context.canvas.width = 800;
+context.canvas.height = 900;
+context.canvas.width = 1650;
 context.fillRect(100,100,100,100);
 sprite = {
 
   height:100,
   jumping:true,
   width:100,
-  x:144, // center of the canvas
+  x:400, // center of the canvas
   x_velocity:0,
   y:0,
   y_velocity:0
 
 };
-
 
 controller = {
 
@@ -59,11 +61,11 @@ controller = {
 
 };
 
+
+
 loop = function() {
     var img = new Image();
   img.src = `./assets/png/Run (${count}).png`;
-  var elm = document.getElementById("header1");
-  elm.innerText = count;
   if (controller.up && sprite.jumping == false) {
       var img = new Image();
   img.src = `./assets/png/Jump (${count -1}).png`;
@@ -93,42 +95,60 @@ loop = function() {
   sprite.y_velocity *= 0.9;// friction
 
   // if sprite is falling below floor line
-  if (sprite.y > 400 - 100) {
+  if (sprite.y > 900 - 100) {
 
     sprite.jumping = false;
-    sprite.y = 400 - 100;
+    sprite.y = 900 - 100;
     sprite.y_velocity = 0;
 
   }
 
   // if sprite is going off the left of the screen
-  if (sprite.x < -32) {
+  if (sprite.x < -100) {
 
     sprite.x = 800;
 
-  } else if (sprite.x > 800) {// if sprite goes past right boundary
+  } else if (sprite.x > 1650) {// if sprite goes past right boundary
 
-    sprite.x = -32;
+    sprite.x = -100;
 
   }
 
-
-  context.fillStyle = "#202020";
-  context.fillRect(0, 0, 800, 800);// x, y, width, height
-  context.fillStyle = "#ff0000";// hex for red
+  context.fillStyle = "#6EB8C1";
+  context.fillRect(0, 0, 1650, 900);// x, y, width, height
   context.beginPath();
   context.drawImage(img ,sprite.x, sprite.y, sprite.width, sprite.height);
-  context.fill();
-  context.strokeStyle = "#202830";
-  context.lineWidth = 4;
   context.beginPath();
-  context.moveTo(0, 164);
+  context.rect(900, 850, 150, 50);
   context.stroke();
+  context.fillStyle = "#003F5F";
+  context.fill();
+  DrawBlocks(context);
 
   // call update when the browser is ready to draw again
   window.requestAnimationFrame(loop);
 
 };
+
+function RandInt(max){
+    return Math.floor(Math.random() * Math.floor(max));
+}
+
+function DrawBlocks(ctx){
+    var min = 0;
+    var x_max = 1550;
+    var y_max = 850;
+    
+    for (let i = 0; i < random; i++){
+        ctx.beginPath();
+        ctx.rect(RandInt(x_max), RandInt(y_max), 150, 50);
+        ctx.stroke();
+        ctx.fillStyle = "#003F5F";
+        ctx.fill();
+    }
+
+    hasInit = true;
+}
 
 window.addEventListener("keydown", controller.keyListener)
 window.addEventListener("keyup", controller.keyListener);
