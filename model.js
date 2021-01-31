@@ -1,6 +1,6 @@
 var context, controller, sprite, loop;
 var count = 1;
-var random = Math.round(Math.random() * 10);
+var random = RandInt(30);
 var hasInit = false;
 var blocks = [];
 var collided_right = false;
@@ -10,10 +10,12 @@ var collided_bottom = false;
 
 
 context = document.querySelector("canvas").getContext("2d");
-
-context.canvas.height = 900;
-context.canvas.width = 1650;
+var max_height = 900;
+var max_width = 1650;
+context.canvas.height = max_height;
+context.canvas.width = max_width;
 context.fillRect(100,100,100,100);
+//window.scrollBy(0,0);
 
 block = {
     width:150,
@@ -51,6 +53,7 @@ controller = {
         if(count > 7){
           count = 2
         }
+        //window.scrollTo(sprite.x,0);
         controller.left = key_state;
       
       break;
@@ -66,6 +69,7 @@ controller = {
         if(count > 7){
           count = 1
         }
+        //window.scrollTo(sprite.x,0);
         controller.right = key_state;
       break;
 
@@ -80,6 +84,8 @@ CreateBlocks();
 loop = function() {
     var img = new Image();
   img.src = `./assets/png/Run (${count}).png`;
+
+  //window.scrollTo({left: sprite.x,behavior: 'smooth'})
   if (controller.up && sprite.jumping == false) {
       //var img = new Image();
   //img.src = `./assets/png/Jump (${count -1}).png`;
@@ -113,7 +119,7 @@ loop = function() {
   sprite.y_velocity *= 0.9;// friction
 
   // if sprite is falling below floor line
-  if (sprite.y > 900 - 100) {
+  if (sprite.y > max_height - 100) {
 
     sprite.jumping = false;
     sprite.y = 900 - 100;
@@ -123,11 +129,13 @@ loop = function() {
 
   // if sprite is going off the left of the screen
   if (sprite.x < -100) {
+    
+    sprite.x = max_width-100;
 
-    sprite.x = 1650;
 
-  } else if (sprite.x > 1650) {// if sprite goes past right boundary
 
+  } else if (sprite.x > max_width-50) {// if sprite goes past right boundary
+    
     sprite.x = -100;
 
   }
@@ -189,7 +197,7 @@ loop = function() {
   }
 
   context.fillStyle = "#6EB8C1";
-  context.fillRect(0, 0, 1650, 900);// x, y, width, height
+  context.fillRect(0, 0, max_width, max_width);// x, y, width, height
   context.beginPath();
   context.drawImage(img ,sprite.x, sprite.y, sprite.width, sprite.height);
   DrawBlocks(context);
@@ -204,12 +212,38 @@ function RandInt(max){
 }
 
 function CreateBlocks(){
-    var x_max = 1550;
-    var y_max = 850;
+    //var x_max = 1550;
+    //var y_max = 850;
 
     for (let i = 0; i < random; i++){
-        blocks.push([RandInt(x_max), RandInt(y_max)])
+      var x_rand = RandInt(max_width -50);
+      var y_rand = RandInt(max_height -50);
+     
+        addBlockToList(x_rand,y_rand);
+
     }
+ 
+}
+
+function addBlockToList(x,y){
+ if(!docheck(x,y))
+ {
+    blocks.push([x,y]);
+  }else{
+        x += 170;
+        y += 70;
+       addBlockToList(x,y);
+  }
+}
+
+function docheck(x,y){
+  var same  = false;
+  blocks.forEach(element => {
+      if(x === element[0] && y === element[1])
+      {
+       return true;
+      }
+  });
 }
 
 function DrawBlocks(ctx){
