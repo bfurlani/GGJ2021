@@ -5,7 +5,7 @@ context = document.querySelector("canvas").getContext("2d");
 
 context.canvas.height = 400;
 context.canvas.width = 800;
-
+context.fillRect(100,100,100,100);
 sprite = {
 
   height:100,
@@ -60,6 +60,8 @@ controller = {
 };
 
 loop = function() {
+    var img = new Image();
+  img.src = `./assets/png/Run (${count}).png`;
   var elm = document.getElementById("header1");
   elm.innerText = count;
   if (controller.up && sprite.jumping == false) {
@@ -73,15 +75,21 @@ loop = function() {
   if (controller.left) {
   var img = new Image();
   img.src = `./assets/png/Run (${count}).png`;
-  img.style.transform = 'rotate(90deg)'
-    sprite.x_velocity -= 0.5;
+  sprite.x_velocity -= 0.5;
+    context.translate(sprite.x, sprite.y);
+    // rotate around that point, converting our 
+    // angle from degrees to radians 
+    context.rotate(3.14159);
+    // draw it up and to the left by half the width
+    // and height of the image 
+    context.drawImage(img, -(img.width/2), -(img.height/2));
 
   }
 
   if (controller.right) {
   var img = new Image();
   img.src = `./assets/png/Run (${count}).png`;
-    sprite.x_velocity += 0.5;
+  sprite.x_velocity += 0.5;
 
   }
 
@@ -111,8 +119,7 @@ loop = function() {
 
   }
 
-  var img = new Image();
-  img.src = `./assets/png/Run (${count}).png`;
+
   context.fillStyle = "#202020";
   context.fillRect(0, 0, 800, 800);// x, y, width, height
   context.fillStyle = "#ff0000";// hex for red
