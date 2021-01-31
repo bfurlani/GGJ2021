@@ -5,9 +5,8 @@ var hasInit = false;
 var max_height = 900;
 var max_width = 1650;
 var someList= []
-var blocks = [[0,100],[150,125],[350,129],[350,129],[],[],[],[],[],[],[],
-              [],[],[],[],[],[],[],[],[],[],[],[],[],[],
-              [0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150]];
+var mapMaker = "";
+var blocks = [];
 var npcs = ["./assets/png/npcs (skin_hair_overalls_hat)/blue_green.png", "./assets/png/npcs (skin_hair_overalls_hat)/blue_blue.png", "./assets/png/npcs (skin_hair_overalls_hat)/red_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/yellow_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/yellow_yellow.png"]
 var clues = [["The correct guy's hat is green", "The correct guy's overalls are blue"], ["The correct guy's hat is blue", "The correct guy's overalls are blue"], ["The correct guy's hat is red", "The correct guy's overalls are red"], ["The correct guy's hat is red", "The correct guy's overalls are yellow"], ["The correct guy's hat is yellow", "The correct guy's overalls are yellow"]]
 var lostItems = ["wallet", "watch", "100 dollar bill", "necklace", "purse"]
@@ -19,10 +18,13 @@ var collided_top = false;
 var collided_bottom = false;
 
 
-
-var map2 = [[0,250],[878, 617],[143,125],[65,567],[51,129],[0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150],[85,125],[36,180],[96,248],[112,367],[487,600],[1200,500],[1450,705],[750,200],[1300,750],[1425,200],[1550,645],[850,300],[500,800],[750,450],[1280,95],[780,140],[600,600]];
+var map1 = [[4,104],[181,150],[353,133],[83,254],[214,348],[401,331],[590,275],[724,190],[870,155],[1049,169],[1175,265],[1297,330],[1481,432],[1378,506],[1200,560],[964,559],[770,563],[570,559],[369,551],[210,580],[46,642],[511,692],[745,687],[900,732],[1005,820],[1141,867],
+              [0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150]];
+var map2 = [[0,250],[878, 617],[143,125],[65,567],[51,129],[0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150],[411,393],[582,473],[466,193],[1155,287],[1053,796],[96,248],[112,367],[487,600],[1200,500],[1450,705],[750,200],[1300,750],[1425,200],[1550,645],[850,300],[500,800],[750,450],[1280,95],[780,140],[600,600]];
 var map3 = [[51, 131],[327, 154],[405, 263],[531, 337],[639, 222],[802, 116],[979, 212],[1156, 136],[1194, 232],[1144, 384],[964, 432],[698, 397],[497, 437],[311, 401],[146, 472],[30, 368],[364, 663]
 ,[98, 687],[1134, 572],[1125, 678],[1008, 733],[873, 807],[631, 716],[573, 393],[1479, 403],[0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150]]
+var map4 = [[52,269],[302,386],[552,314],[733,306],[889,291],[943,409],[1221,353],[1435,244],[1057,142],[767,151],[30,595],[1359,513],[304,583],[614,603],[957,576],[1112,664],[1283,776],[1125,853],[824,884],[803,682],[511,665],[0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150]]
+var mapChoice = getMap();
 context = document.querySelector("canvas").getContext("2d");
 context.canvas.height = max_height;
 context.canvas.width = max_width;
@@ -66,7 +68,8 @@ sprite = {
 window.addEventListener("click", (e)=>{
   //console.log(`[${e.offsetX},${e.offsetY}]`);
   someList.push([e.offsetX,e.offsetY]);
-  console.log(someList);
+  mapMaker +=`[${e.offsetX},${e.offsetY}],`;
+  console.log(mapMaker);
 })
 controller = {
 
@@ -330,11 +333,10 @@ function docheck(x,y){
 }
 
 function DrawBlocks(ctx, img){
-
-    map3.map((set) => {
+    blocks = mapChoice;
+    blocks.map((set) => {
         x = set[0]
         y = set[1]
-
         ctx.beginPath();
         ctx.drawImage(img, x, y, 150, 50);
 
@@ -342,6 +344,20 @@ function DrawBlocks(ctx, img){
     })
     
 
+}
+
+function getMap(){
+  var choice = RandInt(4);
+  console.log(choice);
+  if(choice === 0){
+    return map1;
+  }else if(choice === 1){
+    return map2;
+  }else if(choice === 3){
+    return map3;
+  }else{
+    return map4;
+  }
 }
 
 function CheckWinner(int){
