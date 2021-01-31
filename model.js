@@ -4,6 +4,7 @@ var random = RandInt(30);
 var hasInit = false;
 var blocks = [];
 var npcs = ["./assets/png/npcs (skin_hair_overalls_hat)/blue_green.png", "./assets/png/npcs (skin_hair_overalls_hat)/blue_blue.png", "./assets/png/npcs (skin_hair_overalls_hat)/red_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/yellow_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/yellow_yellow.png"]
+var clues = [["The correct guy's hat is green", "The correct guy's overalls are blue"], ["The correct guy's hat is blue", "The correct guy's overalls are blue"], ["The correct guy's hat is red", "The correct guy's overalls are red"], ["The correct guy's hat is red", "The correct guy's overalls are yellow"], ["The correct guy's hat is yellow", "The correct guy's overalls are yellow"]]
 var lostItems = ["wallet", "watch", "100 dollar bill", "necklace", "purse"]
 var lostItem = lostItems[RandInt(lostItems.length)];
 var dialog = "Help! I lost a " + lostItem + "! I heard you found it, can I have it back please?\n\nSearch the map for clues to return the " + lostItem + " to the correct owner. Once you're sure who the owner is, just click on their respective button to give them their " + lostItem +".";
@@ -12,10 +13,12 @@ var collided_left = false;
 var collided_top = false;
 var collided_bottom = false;
 
-
-context = document.querySelector("canvas").getContext("2d");
 var max_height = 900;
 var max_width = 1650;
+
+var map2 = [[0,250],[143,125],[65,567],[51,129],[0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150],[85,125],[36,180],[96,248],[112,367],[487,600],[1200,500],[1450,705],[750,200],[1300,750],[1425,200],[1550,645],[850,300],[425,800],[750,450],[1280,95],[780,140],[600,600]];
+
+context = document.querySelector("canvas").getContext("2d");
 context.canvas.height = max_height;
 context.canvas.width = max_width;
 context.fillRect(100,100,100,100);
@@ -27,6 +30,13 @@ block = {
     x_pos:RandInt(1550),
     y_pos:RandInt(850),
     color:"#003F5F"
+}
+
+clue = {
+  width:50,
+  height:50,
+  x_pos: blocks[RandInt(blocks.length)[0] + 75],
+  y_pos: self.x
 }
 
 npcSprites = {
@@ -234,7 +244,7 @@ loop = function() {
         
   }
 
-  // win condition
+  // clue
 
   context.fillStyle = "#6EB8C1";
   context.fillRect(0, 0, max_width, max_width);// x, y, width, height
@@ -248,10 +258,10 @@ loop = function() {
   context.drawImage(npcImg2, npcSprites.x - 15, npcSprites.y, sprite.width, sprite.height);
   context.beginPath();
   context.drawImage(npcImg3, npcSprites.x + 48, npcSprites.y, sprite.width, sprite.height);
-  //context.beginPath();
-  //context.drawImage(clueImg, 25, 25, 50, 50)
 
   DrawBlocks(context);
+
+  CreateClues(context, clueImg);
 
   // call update when the browser is ready to draw again
   window.requestAnimationFrame(loop);
@@ -275,6 +285,13 @@ function CreateBlocks(){
     }
  
 }
+
+function CreateClues(ctx, img) {
+    for (let i = 0; i < 2; i++){
+      ctx.beginPath();
+      ctx.drawImage(img, 25, 25, clue.x, clue.y);
+    }
+  }
 
 function addBlockToList(x,y){
  if(!docheck(x,y))
