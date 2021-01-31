@@ -1,8 +1,9 @@
-var context, controller, sprite, loop, count;
+var context, controller, sprite, loop;
+var count = 0;
 
 context = document.querySelector("canvas").getContext("2d");
 
-context.canvas.height = 800;
+context.canvas.height = 400;
 context.canvas.width = 800;
 
 sprite = {
@@ -17,6 +18,7 @@ sprite = {
 
 };
 
+
 controller = {
 
   left:false,
@@ -29,12 +31,21 @@ controller = {
     switch(event.keyCode) {
 
       case 37:// left key
+        count++
+        if(count > 7){
+          count = 1
+        }
         controller.left = key_state;
+      
       break;
       case 38:// up key
         controller.up = key_state;
       break;
       case 39:// right key
+                    count++
+        if(count > 7){
+          count = 1
+        }
         controller.right = key_state;
       break;
 
@@ -45,7 +56,8 @@ controller = {
 };
 
 loop = function() {
-
+  var elm = document.getElementById("header1");
+  elm.innerText = count;
   if (controller.up && sprite.jumping == false) {
 
     sprite.y_velocity -= 20;
@@ -54,13 +66,16 @@ loop = function() {
   }
 
   if (controller.left) {
-
+  var img = new Image();
+  img.src = `./assets/png/Run (${count}).png`;
+  img.style.transform = 'rotate(90deg)'
     sprite.x_velocity -= 0.5;
 
   }
 
   if (controller.right) {
-
+  var img = new Image();
+  img.src = `./assets/png/Run (${count}).png`;
     sprite.x_velocity += 0.5;
 
   }
@@ -72,10 +87,10 @@ loop = function() {
   sprite.y_velocity *= 0.9;// friction
 
   // if sprite is falling below floor line
-  if (sprite.y > 800 - 100) {
+  if (sprite.y > 400 - 100) {
 
     sprite.jumping = false;
-    sprite.y = 800 - 100;
+    sprite.y = 400 - 100;
     sprite.y_velocity = 0;
 
   }
@@ -83,19 +98,21 @@ loop = function() {
   // if sprite is going off the left of the screen
   if (sprite.x < -32) {
 
-    sprite.x = 320;
+    sprite.x = 800;
 
-  } else if (sprite.x > 320) {// if sprite goes past right boundary
+  } else if (sprite.x > 800) {// if sprite goes past right boundary
 
     sprite.x = -32;
 
   }
 
+  var img = new Image();
+  img.src = `./assets/png/Run (${count}).png`;
   context.fillStyle = "#202020";
   context.fillRect(0, 0, 800, 800);// x, y, width, height
   context.fillStyle = "#ff0000";// hex for red
   context.beginPath();
-  context.drawImage(document.getElementById("sprite") ,sprite.x, sprite.y, sprite.width, sprite.height);
+  context.drawImage(img ,sprite.x, sprite.y, sprite.width, sprite.height);
   context.fill();
   context.strokeStyle = "#202830";
   context.lineWidth = 4;
