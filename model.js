@@ -141,7 +141,7 @@ loop = function() {
               sprite.y_velocity = 0;
               sprite.y = blocks[set][1] - 100;
               sprite.jumping = false;
-          } else if (sprite.y + 50 > blocks[set][1]){
+          } else if (sprite.y + 25 > blocks[set][1]){
               sprite.y_velocity = 0;
               sprite.y = blocks[set][1] + 50;
           } else {
@@ -158,7 +158,7 @@ loop = function() {
               sprite.y_velocity = 0;
               sprite.y = blocks[set][1] - 90;
               sprite.jumping = false;
-          } else if (sprite.y + 50 > blocks[set][1]){
+          } else if (sprite.y + 25 > blocks[set][1]){
               sprite.y_velocity = 0;
               sprite.y = blocks[set][1] + 50;
           } else {
