@@ -3,6 +3,10 @@ var count = 1;
 var random = Math.round(Math.random() * 10);
 var hasInit = false;
 var blocks = [];
+var collided_right = false;
+var collided_left = false;
+var collided_top = false;
+var collided_bottom = false;
 
 
 context = document.querySelector("canvas").getContext("2d");
@@ -77,24 +81,28 @@ loop = function() {
     var img = new Image();
   img.src = `./assets/png/Run (${count}).png`;
   if (controller.up && sprite.jumping == false) {
-      var img = new Image();
-  img.src = `./assets/png/Jump (${count -1}).png`;
-    sprite.y_velocity -= 20;
+      //var img = new Image();
+  //img.src = `./assets/png/Jump (${count -1}).png`;
+    sprite.y_velocity -= 40;
     sprite.jumping = true;
 
   }
 
   if (controller.left) {
-  var img = new Image();
-  img.src = `./assets/png/running_flipped/Run (${count}).png`;
-  sprite.x_velocity -= 0.5;
+    if (!collided_right){
+        var img = new Image();
+        img.src = `./assets/png/running_flipped/Run (${count}).png`;
+        sprite.x_velocity -= 0.5;
+    }
 
   }
 
   if (controller.right) {
-  var img = new Image();
-  img.src = `./assets/png/Run (${count}).png`;
-  sprite.x_velocity += 0.5;
+      if (!collided_left){
+        var img = new Image();
+        img.src = `./assets/png/Run (${count}).png`;
+        sprite.x_velocity += 0.5;
+      }
 
   }
 
@@ -116,7 +124,7 @@ loop = function() {
   // if sprite is going off the left of the screen
   if (sprite.x < -100) {
 
-    sprite.x = 800;
+    sprite.x = 1650;
 
   } else if (sprite.x > 1650) {// if sprite goes past right boundary
 
@@ -124,15 +132,66 @@ loop = function() {
 
   }
 
+  for (set in blocks){
+      if ((sprite.x + 25 >= blocks[set][0] && sprite.x + 25 <= blocks[set][0] + 150 && sprite.y + 10 >= blocks[set][1] && sprite.y + 10 <= blocks[set][1] + 50) || 
+            (sprite.x + 25 >= blocks[set][0] && sprite.x + 25 <= blocks[set][0] + 150 && sprite.y + 90 >= blocks[set][1] && sprite.y + 90 <= blocks[set][1] + 50) || 
+            (sprite.x + 25 >= blocks[set][0] && sprite.x + 25 <= blocks[set][0] + 150 && sprite.y + 50 >= blocks[set][1] && sprite.y + 50 <= blocks[set][1] + 50)){
+          // collide from right
+          if (sprite.y + 50 < blocks[set][1]){
+              sprite.y_velocity = 0;
+              sprite.y = blocks[set][1] - 100;
+              sprite.jumping = false;
+          } else if (sprite.y + 50 > blocks[set][1]){
+              sprite.y_velocity = 0;
+              sprite.y = blocks[set][1] + 50;
+          } else {
+              sprite.x_velocity = 0;
+              sprite.x = blocks[set][0] + 120;
+          }
+      }
+
+      if ((sprite.x + 75 >= blocks[set][0] && sprite.x + 75 <= blocks[set][0] + 150 && sprite.y + 20 >= blocks[set][1] && sprite.y + 20 <= blocks[set][1] + 50) || 
+            (sprite.x + 75 >= blocks[set][0] && sprite.x + 75 <= blocks[set][0] + 150 && sprite.y + 100 >= blocks[set][1] && sprite.y + 100 <= blocks[set][1] + 50) || 
+            (sprite.x + 75 >= blocks[set][0] && sprite.x + 75 <= blocks[set][0] + 150 && sprite.y + 50 >= blocks[set][1] && sprite.y + 50 <= blocks[set][1] + 50)){
+          // collide from left
+          if (sprite.y + 50 < blocks[set][1]){
+              sprite.y_velocity = 0;
+              sprite.y = blocks[set][1] - 90;
+              sprite.jumping = false;
+          } else if (sprite.y + 50 > blocks[set][1]){
+              sprite.y_velocity = 0;
+              sprite.y = blocks[set][1] + 50;
+          } else {
+              sprite.x_velocity = 0;
+              sprite.x = blocks[set][0] - 80;
+          }
+      }
+
+      /*
+      if (sprite.x >= blocks[set][0] && sprite.x <= blocks[set][0] + 150 && sprite.y >= blocks[set][1] && sprite.y <= blocks[set][1] + 50){
+          sprite.x_velocity = 0;
+          sprite.y_velocity = 0;
+
+          if (sprite.x > (blocks[set][0] + blocks[set][0] + 150) / 2){
+            sprite.x = blocks[set][0] + 150;
+          } else {
+              sprite.x = blocks[set][0];
+          }
+
+          if (sprite.y > (blocks[set][1] + blocks[set][1] + 50) / 2){
+            sprite.y = blocks[set][1] + 50;
+          } else {
+            sprite.x = blocks[set][0];
+          }
+      }
+      */
+        
+  }
+
   context.fillStyle = "#6EB8C1";
   context.fillRect(0, 0, 1650, 900);// x, y, width, height
   context.beginPath();
   context.drawImage(img ,sprite.x, sprite.y, sprite.width, sprite.height);
-  context.beginPath();
-  context.rect(900, 850, 150, 50);
-  context.stroke();
-  context.fillStyle = "#003F5F";
-  context.fill();
   DrawBlocks(context);
 
   // call update when the browser is ready to draw again
