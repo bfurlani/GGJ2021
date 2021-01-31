@@ -6,7 +6,7 @@ var blocks = [];
 var npcs = ["./assets/png/npcs (skin_hair_overalls_hat)/blue_green.png", "./assets/png/npcs (skin_hair_overalls_hat)/blue_blue.png", "./assets/png/npcs (skin_hair_overalls_hat)/red_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/yellow_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/yellow_yellow.png"]
 var lostItems = ["wallet", "watch", "100 dollar bill", "necklace", "purse"]
 var lostItem = lostItems[RandInt(lostItems.length)];
-var dialog = "Help! I lost a " + lostItem + "! I heard you found it, can I have it back please?\n\nSearch the map for clues to return the " + lostItem + " to the correct owner. Once you're sure who the owner is, just click on them to give them their " + lostItem +".";
+var dialog = "Help! I lost a " + lostItem + "! I heard you found it, can I have it back please?\n\nSearch the map for clues to return the " + lostItem + " to the correct owner. Once you're sure who the owner is, just click on their respective button to give them their " + lostItem +".";
 var collided_right = false;
 var collided_left = false;
 var collided_top = false;
@@ -234,8 +234,6 @@ loop = function() {
 
   // win condition
 
-  //if (correctNPC == 0 && )
-
   context.fillStyle = "#6EB8C1";
   context.fillRect(0, 0, max_width, max_width);// x, y, width, height
   context.beginPath();
@@ -243,11 +241,11 @@ loop = function() {
 
   //draw npcs
   context.beginPath();
-  context.drawImage(npcImg1, npcSprites.x - 50, npcSprites.y, sprite.width, sprite.height);
+  context.drawImage(npcImg1, npcSprites.x - 80, npcSprites.y, sprite.width, sprite.height);
   context.beginPath();
-  context.drawImage(npcImg2, npcSprites.x, npcSprites.y, sprite.width, sprite.height);
+  context.drawImage(npcImg2, npcSprites.x - 15, npcSprites.y, sprite.width, sprite.height);
   context.beginPath();
-  context.drawImage(npcImg3, npcSprites.x + 50, npcSprites.y, sprite.width, sprite.height);
+  context.drawImage(npcImg3, npcSprites.x + 48, npcSprites.y, sprite.width, sprite.height);
 
   DrawBlocks(context);
 
@@ -310,6 +308,16 @@ function DrawBlocks(ctx){
     })
     
 
+}
+
+function CheckWinner(int){
+  if (int == correctNPC){
+    alert("Congrats! You win! The game will now reset!")
+    location.reload();
+  } else {
+    alert("Sorry, that was not the correct person. You lose. The game will reset.")
+    location.reload();
+  }
 }
 
 window.addEventListener("keydown", controller.keyListener)

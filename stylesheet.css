@@ -33,3 +33,8 @@
     background-color:#ffffff;
   
   }
+
+  button {
+    width: 50px;
+    margin: 5px;
+  }
