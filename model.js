@@ -1,9 +1,12 @@
-var context, controller, sprite, loop;
+var context, controller, sprite, loop, correctNPC;
 var count = 1;
 var random = Math.round(Math.random() * 10);
 var hasInit = false;
 var blocks = [];
-var npcs = ["./assets/png/npcs (skin_hair_overalls_hat)/blue_green.png", "./assets/png/npcs (skin_hair_overalls_hat)/blue_blue.png", "./assets/png/npcs (skin_hair_overalls_hat)/red_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/"]
+var npcs = ["./assets/png/npcs (skin_hair_overalls_hat)/blue_green.png", "./assets/png/npcs (skin_hair_overalls_hat)/blue_blue.png", "./assets/png/npcs (skin_hair_overalls_hat)/red_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/yellow_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/yellow_yellow.png"]
+var lostItems = ["wallet", "watch", "100 dollar bill", "necklace", "purse"]
+var lostItem = lostItems[RandInt(lostItems.length)];
+var dialog = "Help! I lost a " + lostItem + "! I heard you found it, can I have it back please?\n\nSearch the map for clues to return the " + lostItem + " to the correct owner. Once you're sure who the owner is, just click on them to give them their " + lostItem +".";
 var collided_right = false;
 var collided_left = false;
 var collided_top = false;
@@ -27,8 +30,8 @@ block = {
 npcSprites = {
   height:100,
   width:300,
-  x:150,
-  y:800
+  x:50,
+  y:812
 }
 
 sprite = {
@@ -38,7 +41,7 @@ sprite = {
   width:100,
   x:400, // center of the canvas
   x_velocity:0,
-  y:800,
+  y:812,
   y_velocity:0
 
 };
@@ -85,9 +88,36 @@ controller = {
 
 CreateBlocks();
 
+randNPC1 = RandInt(npcs.length)
+randNPC2 = RandInt(npcs.length)
+randNPC3 = RandInt(npcs.length)
+
+// npc order on screen will always be 1-3, left-right
+
+correctNPC = RandInt(3)
+
+alert("Winner is NPC " + correctNPC)
+
+while (randNPC2 == randNPC1){
+  randNPC2 = RandInt(npcs.length)
+}
+
+while (randNPC3 == randNPC1 || randNPC3 == randNPC2){
+  randNPC3 = RandInt(npcs.length)
+}
+
+alert(dialog)
+
 loop = function() {
     var img = new Image();
   img.src = `./assets/png/Run (${count}).png`;
+
+  var npcImg1 = new Image();
+  npcImg1.src = npcs[randNPC1];
+  var npcImg2 = new Image();
+  npcImg2.src = npcs[randNPC2];
+  var npcImg3 = new Image();
+  npcImg3.src = npcs[randNPC3];
   if (controller.up && sprite.jumping == false) {
       //var img = new Image();
   //img.src = `./assets/png/Jump (${count -1}).png`;
@@ -121,10 +151,10 @@ loop = function() {
   sprite.y_velocity *= 0.9;// friction
 
   // if sprite is falling below floor line
-  if (sprite.y > 900 - 100) {
+  if (sprite.y > 900 - 88) {
 
     sprite.jumping = false;
-    sprite.y = 900 - 100;
+    sprite.y = 900 - 88;
     sprite.y_velocity = 0;
 
   }
@@ -196,10 +226,23 @@ loop = function() {
         
   }
 
+  // win condition
+
+  //if (correctNPC == 0 && )
+
   context.fillStyle = "#6EB8C1";
   context.fillRect(0, 0, 1650, 900);// x, y, width, height
   context.beginPath();
   context.drawImage(img ,sprite.x, sprite.y, sprite.width, sprite.height);
+
+  //draw npcs
+  context.beginPath();
+  context.drawImage(npcImg1, npcSprites.x - 50, npcSprites.y, sprite.width, sprite.height);
+  context.beginPath();
+  context.drawImage(npcImg2, npcSprites.x, npcSprites.y, sprite.width, sprite.height);
+  context.beginPath();
+  context.drawImage(npcImg3, npcSprites.x + 50, npcSprites.y, sprite.width, sprite.height);
+
   DrawBlocks(context);
 
   // call update when the browser is ready to draw again
