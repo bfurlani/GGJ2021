@@ -1,95 +1,18 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="./stylesheet.css" id="stylehseet" />
 
-<script>
-  let down = false;
-  let count = 0;
-  let onSurface = true;
-  let currentlyJumping = false;
-  window.addEventListener("keydown", (e) => {
-    if (e.keyCode === 68) {
-      let elm = document.getElementById("sprite");
-      down = true;
-      count++;
-      count++;
-      elm.src = `./assets/png/Run (${count / 2}).png`;
-      elm.style.transform = "scaleX(1)";
-      let x = elm.offsetLeft;
-      moveRight(x);
-      if (count > 14) {
-        count = 0;
-      }
-    }
-    if (e.keyCode === 65) {
-      let elm = document.getElementById("sprite");
-      elm.style.transform = "scaleX(-1)";
-      down = true;
-      count++;
-      count++;
-      elm.src = `./assets/png/Run (${count / 2}).png`;
-      let x = elm.offsetLeft;
-      moveLeft(x);
-      if (count > 14) {
-        count = 0;
-      }
-      if (e.keyCode === 32) {
-        let elm = document.getElementById("sprite");
-        let x = elm.offsetTop;
-        jump(x);
-      }
-    }
-  });
 
-  window.addEventListener("keyup", (e) => {
-    if (e.keyCode == 68) {
-      down = false;
-      let elm = document.getElementById("sprite");
-      elm.src = "./assets/png/Idle (1).png";
-      elm.style.transform = "scaleX(1)";
-    }
-    if (e.keyCode == 65) {
-      let elm = document.getElementById("sprite");
-      elm.src = "./assets/png/Idle (1).png";
-      elm.style.transform = "scaleX(-1)";
-    }
-  });
-
-  function moveRight(x) {
-    let elm = document.getElementById("sprite");
-    let newOffset = x + 20;
-    elm.style.left = newOffset + "px";
-    //alert(x);
-  }
-
-  function moveLeft(x) {
-    let elm = document.getElementById("sprite");
-    let newOffset = x - 20;
-    elm.style.left = newOffset + "px";
-    //alert(x);
-  }
-
-  function jump(x) {
-    if (onSurface == true) {
-      let elm = document.getElementById("sprite");
-      let jumpOffset = x - 3;
-      elm.style.transform = `translateY(${jumpOffset}px)`;
-      onSurface = false;
-      while (onSurface === false) {
-        jumpOffset = jumpOffset + 9.8;
-        elm.style.transform = `translateY(${jumpOffset}px)`;
-        if (jumpOffset > 100) {
-          onSurface = true;
-          currentlyJumping = false;
-        }
-      }
-    } else {
-      return;
-    }
-  }
-</script>
 <html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <title>ugh</title>
+    <link rel="stylesheet" href="./stylesheet.css" id="stylehseet" />
+  </head>
   <body>
     <h1>hello</h1>
     <div><img id="sprite" src="./assets/png/Idle (1).png" alt="F" /></div>
+
+    <canvas></canvas>
+
+    <script src="./model.js" type="text/javascript"></script>
   </body>
 </html>
