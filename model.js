@@ -1,3 +1,13 @@
+
+function startGame(){
+  var body = document.getElementById("mainBody");
+  body.innerHTML = `<canvas></canvas>
+    <div>
+      <button id="btn_0" onclick="CheckWinner(0)">Guy 1</button>
+      <button id="btn_1" onclick="CheckWinner(1)">Guy 2</button>
+      <button id="btn_2" onclick="CheckWinner(2)">Guy 3</button>
+    </div>`
+
 var context, controller, sprite, loop, correctNPC;
 var count = 1;
 var random = RandInt(30);
@@ -373,7 +383,7 @@ function CheckWinner(int){
 window.addEventListener("keydown", controller.keyListener)
 window.addEventListener("keyup", controller.keyListener);
 window.requestAnimationFrame(loop);
-
+}
 
 /*
 let gravity = 9.8
