@@ -1,5 +1,5 @@
 var context, controller, sprite, loop;
-var count = 0;
+var count = 1;
 
 context = document.querySelector("canvas").getContext("2d");
 
@@ -33,12 +33,16 @@ controller = {
       case 37:// left key
         count++
         if(count > 7){
-          count = 1
+          count = 2
         }
         controller.left = key_state;
       
       break;
       case 38:// up key
+      count++;
+              if(count > 8){
+          count = 1
+        }
         controller.up = key_state;
       break;
       case 39:// right key
@@ -59,7 +63,8 @@ loop = function() {
   var elm = document.getElementById("header1");
   elm.innerText = count;
   if (controller.up && sprite.jumping == false) {
-
+      var img = new Image();
+  img.src = `./assets/png/Jump (${count -1}).png`;
     sprite.y_velocity -= 20;
     sprite.jumping = true;
 
