@@ -2,6 +2,7 @@ var context, controller, sprite, loop;
 var count = 1;
 var random = Math.round(Math.random() * 10);
 var hasInit = false;
+var blocks = [];
 
 
 context = document.querySelector("canvas").getContext("2d");
@@ -9,6 +10,15 @@ context = document.querySelector("canvas").getContext("2d");
 context.canvas.height = 900;
 context.canvas.width = 1650;
 context.fillRect(100,100,100,100);
+
+block = {
+    width:150,
+    height:50,
+    x_pos:RandInt(1550),
+    y_pos:RandInt(850),
+    color:"#003F5F"
+}
+
 sprite = {
 
   height:100,
@@ -61,7 +71,7 @@ controller = {
 
 };
 
-
+CreateBlocks();
 
 loop = function() {
     var img = new Image();
@@ -134,20 +144,30 @@ function RandInt(max){
     return Math.floor(Math.random() * Math.floor(max));
 }
 
-function DrawBlocks(ctx){
-    var min = 0;
+function CreateBlocks(){
     var x_max = 1550;
     var y_max = 850;
-    
+
     for (let i = 0; i < random; i++){
+        blocks.push([RandInt(x_max), RandInt(y_max)])
+    }
+}
+
+function DrawBlocks(ctx){
+
+    blocks.map((set) => {
+        x = set[0]
+        y = set[1]
+
         ctx.beginPath();
-        ctx.rect(RandInt(x_max), RandInt(y_max), 150, 50);
+        ctx.rect(x, y, 150, 50);
         ctx.stroke();
         ctx.fillStyle = "#003F5F";
         ctx.fill();
-    }
+        
+    })
+    
 
-    hasInit = true;
 }
 
 window.addEventListener("keydown", controller.keyListener)
