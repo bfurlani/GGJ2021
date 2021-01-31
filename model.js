@@ -74,7 +74,7 @@ loop = function() {
 
   if (controller.left) {
   var img = new Image();
-  img.src = `./assets/png/Run (${count}).png`;
+  img.src = `./assets/png/running_flipped/Run (${count}).png`;
   sprite.x_velocity -= 0.5;
 
   }
