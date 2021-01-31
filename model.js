@@ -2,7 +2,12 @@ var context, controller, sprite, loop, correctNPC;
 var count = 1;
 var random = RandInt(30);
 var hasInit = false;
-var blocks = [];
+var max_height = 900;
+var max_width = 1650;
+var someList= []
+var blocks = [[0,100],[150,125],[350,129],[350,129],[],[],[],[],[],[],[],
+              [],[],[],[],[],[],[],[],[],[],[],[],[],[],
+              [0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150]];
 var npcs = ["./assets/png/npcs (skin_hair_overalls_hat)/blue_green.png", "./assets/png/npcs (skin_hair_overalls_hat)/blue_blue.png", "./assets/png/npcs (skin_hair_overalls_hat)/red_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/yellow_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/yellow_yellow.png"]
 var clues = [["The correct guy's hat is green", "The correct guy's overalls are blue"], ["The correct guy's hat is blue", "The correct guy's overalls are blue"], ["The correct guy's hat is red", "The correct guy's overalls are red"], ["The correct guy's hat is red", "The correct guy's overalls are yellow"], ["The correct guy's hat is yellow", "The correct guy's overalls are yellow"]]
 var lostItems = ["wallet", "watch", "100 dollar bill", "necklace", "purse"]
@@ -13,11 +18,11 @@ var collided_left = false;
 var collided_top = false;
 var collided_bottom = false;
 
-var max_height = 900;
-var max_width = 1650;
 
-var map2 = [[0,250],[143,125],[65,567],[51,129],[0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150],[85,125],[36,180],[96,248],[112,367],[487,600],[1200,500],[1450,705],[750,200],[1300,750],[1425,200],[1550,645],[850,300],[425,800],[750,450],[1280,95],[780,140],[600,600]];
 
+var map2 = [[0,250],[878, 617],[143,125],[65,567],[51,129],[0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150],[85,125],[36,180],[96,248],[112,367],[487,600],[1200,500],[1450,705],[750,200],[1300,750],[1425,200],[1550,645],[850,300],[500,800],[750,450],[1280,95],[780,140],[600,600]];
+var map3 = [[51, 131],[327, 154],[405, 263],[531, 337],[639, 222],[802, 116],[979, 212],[1156, 136],[1194, 232],[1144, 384],[964, 432],[698, 397],[497, 437],[311, 401],[146, 472],[30, 368],[364, 663]
+,[98, 687],[1134, 572],[1125, 678],[1008, 733],[873, 807],[631, 716],[573, 393],[1479, 403],[0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150]]
 context = document.querySelector("canvas").getContext("2d");
 context.canvas.height = max_height;
 context.canvas.width = max_width;
@@ -58,6 +63,11 @@ sprite = {
 
 };
 
+window.addEventListener("click", (e)=>{
+  //console.log(`[${e.offsetX},${e.offsetY}]`);
+  someList.push([e.offsetX,e.offsetY]);
+  console.log(someList);
+})
 controller = {
 
   left:false,
@@ -100,7 +110,7 @@ controller = {
 
 };
 
-CreateBlocks();
+//CreateBlocks();
 
 randNPC1 = RandInt(npcs.length)
 randNPC2 = RandInt(npcs.length)
@@ -316,7 +326,7 @@ function docheck(x,y){
 
 function DrawBlocks(ctx){
 
-    blocks.map((set) => {
+    map3.map((set) => {
         x = set[0]
         y = set[1]
 
