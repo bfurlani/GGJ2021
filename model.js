@@ -3,6 +3,7 @@ var count = 1;
 var random = Math.round(Math.random() * 10);
 var hasInit = false;
 var blocks = [];
+var npcs = ["./assets/png/npcs (skin_hair_overalls_hat)/blue_green.png", "./assets/png/npcs (skin_hair_overalls_hat)/blue_blue.png", "./assets/png/npcs (skin_hair_overalls_hat)/red_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/"]
 var collided_right = false;
 var collided_left = false;
 var collided_top = false;
@@ -23,6 +24,13 @@ block = {
     color:"#003F5F"
 }
 
+npcSprites = {
+  height:100,
+  width:300,
+  x:150,
+  y:800
+}
+
 sprite = {
 
   height:100,
@@ -30,7 +38,7 @@ sprite = {
   width:100,
   x:400, // center of the canvas
   x_velocity:0,
-  y:0,
+  y:800,
   y_velocity:0
 
 };
