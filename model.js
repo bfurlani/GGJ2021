@@ -76,13 +76,6 @@ loop = function() {
   var img = new Image();
   img.src = `./assets/png/Run (${count}).png`;
   sprite.x_velocity -= 0.5;
-    context.translate(sprite.x, sprite.y);
-    // rotate around that point, converting our 
-    // angle from degrees to radians 
-    context.rotate(3.14159);
-    // draw it up and to the left by half the width
-    // and height of the image 
-    context.drawImage(img, -(img.width/2), -(img.height/2));
 
   }
 
