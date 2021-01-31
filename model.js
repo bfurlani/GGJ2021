@@ -144,6 +144,11 @@ loop = function() {
   npcImg3.src = npcs[randNPC3];
   var clueImg = new Image;
   clueImg.src = "./assets/png/clue.png";
+  var bckImg = new Image();
+  bckImg.src = "./assets/png/background/background.png";
+  var blockImg = new Image();
+  blockImg.src = "./assets/png/planks_jungle.png"
+
   if (controller.up && sprite.jumping == false) {
       //var img = new Image();
   //img.src = `./assets/png/Jump (${count -1}).png`;
@@ -256,8 +261,8 @@ loop = function() {
 
   // clue
 
-  context.fillStyle = "#6EB8C1";
-  context.fillRect(0, 0, max_width, max_width);// x, y, width, height
+  //context.fillStyle = "./assets/png/background/background.png";
+  context.drawImage(bckImg, 0, 0, max_width, max_height);// x, y, width, height
   context.beginPath();
   context.drawImage(img ,sprite.x, sprite.y, sprite.width, sprite.height);
 
@@ -269,7 +274,7 @@ loop = function() {
   context.beginPath();
   context.drawImage(npcImg3, npcSprites.x + 48, npcSprites.y, sprite.width, sprite.height);
 
-  DrawBlocks(context);
+  DrawBlocks(context, blockImg);
 
   CreateClues(context, clueImg);
 
@@ -324,17 +329,15 @@ function docheck(x,y){
   });
 }
 
-function DrawBlocks(ctx){
+function DrawBlocks(ctx, img){
 
     map3.map((set) => {
         x = set[0]
         y = set[1]
 
         ctx.beginPath();
-        ctx.rect(x, y, 150, 50);
-        ctx.stroke();
-        ctx.fillStyle = "#003F5F";
-        ctx.fill();
+        ctx.drawImage(img, x, y, 150, 50);
+
         
     })
     
