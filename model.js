@@ -122,6 +122,8 @@ loop = function() {
   npcImg2.src = npcs[randNPC2];
   var npcImg3 = new Image();
   npcImg3.src = npcs[randNPC3];
+  var clueImg = new Image;
+  clueImg.src = "./assets/png/clue.png";
   if (controller.up && sprite.jumping == false) {
       //var img = new Image();
   //img.src = `./assets/png/Jump (${count -1}).png`;
@@ -246,6 +248,8 @@ loop = function() {
   context.drawImage(npcImg2, npcSprites.x - 15, npcSprites.y, sprite.width, sprite.height);
   context.beginPath();
   context.drawImage(npcImg3, npcSprites.x + 48, npcSprites.y, sprite.width, sprite.height);
+  //context.beginPath();
+  //context.drawImage(clueImg, 25, 25, 50, 50)
 
   DrawBlocks(context);
 
