@@ -8,6 +8,21 @@ function startGame(){
       <button id="btn_2" onclick="CheckWinner(2)">Guy 3</button>
     </div>`
 
+var btn_0 = document.getElementById("btn_0");
+var btn_1 = document.getElementById("btn_1");
+var btn_2 = document.getElementById("btn_2");
+
+btn_0.addEventListener("click",()=>{
+  CheckWinner(0);
+});
+btn_1.addEventListener("click",()=>{
+  CheckWinner(1);
+});
+
+btn_2.addEventListener("click",()=>{
+  CheckWinner(2);
+});
+
 var context, controller, sprite, loop, correctNPC;
 var count = 1;
 var random = RandInt(30);
@@ -17,6 +32,7 @@ var max_width = 1650;
 var someList= []
 var mapMaker = "";
 var blocks = [];
+var clueBlocks = [];
 var npcs = ["./assets/png/npcs (skin_hair_overalls_hat)/blue_green.png", "./assets/png/npcs (skin_hair_overalls_hat)/blue_blue.png", "./assets/png/npcs (skin_hair_overalls_hat)/red_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/yellow_red.png", "./assets/png/npcs (skin_hair_overalls_hat)/yellow_yellow.png"]
 var clues = [["The correct guy's hat is green", "The correct guy's overalls are blue"], ["The correct guy's hat is blue", "The correct guy's overalls are blue"], ["The correct guy's hat is red", "The correct guy's overalls are red"], ["The correct guy's hat is red", "The correct guy's overalls are yellow"], ["The correct guy's hat is yellow", "The correct guy's overalls are yellow"]]
 var lostItems = ["wallet", "watch", "100 dollar bill", "necklace", "purse"]
@@ -35,6 +51,7 @@ var map3 = [[51, 131],[327, 154],[405, 263],[531, 337],[639, 222],[802, 116],[97
 ,[98, 687],[1134, 572],[1125, 678],[1008, 733],[873, 807],[631, 716],[573, 393],[1479, 403],[0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150]]
 var map4 = [[52,269],[302,386],[552,314],[733,306],[889,291],[943,409],[1221,353],[1435,244],[1057,142],[767,151],[30,595],[1359,513],[304,583],[614,603],[957,576],[1112,664],[1283,776],[1125,853],[824,884],[803,682],[511,665],[0,750],[150,750],[200,800],[225,850],[max_width-150,max_height-100],[max_width-200,max_height-50],[max_width-100,max_height-150]]
 var mapChoice = getMap();
+blocks = mapChoice;
 context = document.querySelector("canvas").getContext("2d");
 context.canvas.height = max_height;
 context.canvas.width = max_width;
@@ -124,26 +141,36 @@ controller = {
 };
 
 //CreateBlocks();
+CreateClues();
 
-randNPC1 = RandInt(npcs.length)
-randNPC2 = RandInt(npcs.length)
-randNPC3 = RandInt(npcs.length)
+console.log(clueBlocks);
+
+randNPC1 = RandInt(npcs.length);
+randNPC2 = RandInt(npcs.length);
+randNPC3 = RandInt(npcs.length);
+
+let npcsOnScreen = [npcs[randNPC1], npcs[randNPC2], npcs[randNPC3]];
 
 // npc order on screen will always be 1-3, left-right
 
-correctNPC = RandInt(3)
+correctNPC = RandInt(3);
 
-alert("Winner is NPC " + correctNPC)
+let winner = npcsOnScreen[correctNPC];
+
+console.log(winner);
+
+//alert("Winner is NPC " + correctNPC);
+
 
 while (randNPC2 == randNPC1){
-  randNPC2 = RandInt(npcs.length)
+  randNPC2 = RandInt(npcs.length);
 }
 
 while (randNPC3 == randNPC1 || randNPC3 == randNPC2){
-  randNPC3 = RandInt(npcs.length)
+  randNPC3 = RandInt(npcs.length);
 }
 
-alert(dialog)
+alert(dialog);
 
 loop = function() {
     var img = new Image();
@@ -155,8 +182,6 @@ loop = function() {
   npcImg2.src = npcs[randNPC2];
   var npcImg3 = new Image();
   npcImg3.src = npcs[randNPC3];
-  var clueImg = new Image;
-  clueImg.src = "./assets/png/clue.png";
   var bckImg = new Image();
   bckImg.src = "./assets/png/background/background.png";
   var blockImg = new Image();
@@ -216,11 +241,14 @@ loop = function() {
 
   }
 
+  var counter = 0;
+
   for (set in blocks){
       if ((sprite.x + 25 >= blocks[set][0] && sprite.x + 25 <= blocks[set][0] + 150 && sprite.y + 10 >= blocks[set][1] && sprite.y + 10 <= blocks[set][1] + 50) || 
             (sprite.x + 25 >= blocks[set][0] && sprite.x + 25 <= blocks[set][0] + 150 && sprite.y + 90 >= blocks[set][1] && sprite.y + 90 <= blocks[set][1] + 50) || 
             (sprite.x + 25 >= blocks[set][0] && sprite.x + 25 <= blocks[set][0] + 150 && sprite.y + 50 >= blocks[set][1] && sprite.y + 50 <= blocks[set][1] + 50)){
-          // collide from right
+          
+              // collide from right
           if (sprite.y + 50 < blocks[set][1]){
               sprite.y_velocity = 0;
               sprite.y = blocks[set][1] - 100;
@@ -231,6 +259,17 @@ loop = function() {
           } else {
               sprite.x_velocity = 0;
               sprite.x = blocks[set][0] + 120;
+          }
+
+          if (clueBlocks[counter] === 1){
+            clueBlocks[counter] = 0;
+            console.log()
+            alert(clues[npcs.indexOf(winner)][0]);
+          }
+
+          if (clueBlocks[counter] === 2){
+            clueBlocks[counter] = 0;
+            alert(clues[npcs.indexOf(winner)][1]);
           }
       }
 
@@ -249,7 +288,19 @@ loop = function() {
               sprite.x_velocity = 0;
               sprite.x = blocks[set][0] - 80;
           }
+
+          if (clueBlocks[counter] === 1){
+            clueBlocks[counter] = 0;
+            alert(clues[npcs.indexOf(winner)][0]);
+          }
+
+          if (clueBlocks[counter] === 2){
+            clueBlocks[counter] = 0;
+            alert(clues[npcs.indexOf(winner)][1]);
+          }
       }
+
+      counter++
 
       /*
       if (sprite.x >= blocks[set][0] && sprite.x <= blocks[set][0] + 150 && sprite.y >= blocks[set][1] && sprite.y <= blocks[set][1] + 50){
@@ -289,8 +340,6 @@ loop = function() {
 
   DrawBlocks(context, blockImg);
 
-  CreateClues(context, clueImg);
-
   // call update when the browser is ready to draw again
   window.requestAnimationFrame(loop);
 
@@ -315,10 +364,22 @@ function CreateBlocks(){
 }
 
 function CreateClues(ctx, img) {
-    for (let i = 0; i < 2; i++){
-      ctx.beginPath();
-      ctx.drawImage(img, 25, 25, clue.x, clue.y);
+    console.log(blocks)
+    let rand1 = RandInt(blocks.length);
+    let rand2 = RandInt(blocks.length);
+
+    while (rand1 == rand2){
+      rand2 = RandInt(blocks.length);
     }
+
+    for (let i = 0; i < blocks.length; i++){
+      clueBlocks.push(0)
+    }
+
+    clueBlocks[rand1] = 1;
+    clueBlocks[rand2] = 2;
+
+
   }
 
 function addBlockToList(x,y){
@@ -343,7 +404,6 @@ function docheck(x,y){
 }
 
 function DrawBlocks(ctx, img){
-    blocks = mapChoice;
     blocks.map((set) => {
         x = set[0]
         y = set[1]
@@ -380,7 +440,7 @@ function CheckWinner(int){
   }
 }
 
-window.addEventListener("keydown", controller.keyListener)
+window.addEventListener("keydown", controller.keyListener);
 window.addEventListener("keyup", controller.keyListener);
 window.requestAnimationFrame(loop);
 }
