@@ -123,7 +123,6 @@ loop = function() {
   context.lineWidth = 4;
   context.beginPath();
   context.moveTo(0, 164);
-  context.lineTo(320, 164);
   context.stroke();
 
   // call update when the browser is ready to draw again
